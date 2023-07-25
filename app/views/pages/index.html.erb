@@ -1,11 +1,15 @@
-<%= form_with do |f| %>
+<%= form_with url: '/', method: :get do |f| %>
   <%= f.label :query, "Search For" %>
-  <%= f.text_field :query %>
+  <%= f.text_field :query, value: @query %>
   <%= f.submit "Search" %>
 <% end %>
 
 <br>
 <br>
+
+<% if @query.present? %>
+  <h2> You searched for "<%= @query %>" </h2>
+<% end %>
 
 <table>
   <thead>
@@ -14,25 +18,13 @@
     <th> Score </th>
   </thead>
   <tbody>
-    <tr>
-      <td>ID</td>
-      <td>Title</td>
-      <td>Score</td>
-    </tr>
-    <tr>
-      <td>ID</td>
-      <td>Title</td>
-      <td>Score</td>
-    </tr>
-    <tr>
-      <td>ID</td>
-      <td>Title</td>
-      <td>Score</td>
-    </tr>
-    <tr>
-      <td>ID</td>
-      <td>Title</td>
-      <td>Score</td>
-    </tr>
+    <% @results&.each do |result| %>
+      <% attributes = result["attributes"] %>
+      <tr>
+        <td><%= attributes["id"] %></td>
+        <td><%= attributes["title"] %></td>
+        <td><%= attributes["_score"] %></td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
