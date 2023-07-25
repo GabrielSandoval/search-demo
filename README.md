@@ -1,24 +1,67 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
+Rails search demo using Chewy (Elasticsearch)
 
 * Ruby version
+`3.2.2`
 
 * System dependencies
 
-* Configuration
+  Make sure you have Elasticsearch installed and running:
+  ```
+  curl localhost:9200
+  => {
+    "name" : "...",
+    "cluster_name" : "...",
+    "cluster_uuid" : "...",
+    "version" : {
+      "number" : "7.17.4",
+      "build_flavor" : "default",
+      "build_type" : "tar",
+      "build_hash" : "79878662c54c886ae89206c685d9f1051a9d6411",
+      "build_date" : "2022-05-18T18:04:20.964345128Z",
+      "build_snapshot" : false,
+      "lucene_version" : "8.11.1",
+      "minimum_wire_compatibility_version" : "6.8.0",
+      "minimum_index_compatibility_version" : "6.0.0-beta1"
+    },
+    "tagline" : "You Know, for Search"
+  }
+  ```
 
-* Database creation
+* Clone the app
 
-* Database initialization
+  ```
+  git clone git@github.com:GabrielSandoval/search-demo.git
+  ```
 
-* How to run the test suite
+* Move to app directory
 
-* Services (job queues, cache servers, search engines, etc.)
+  ```
+  cd search-demo
+  ```
 
-* Deployment instructions
+* Install gems
 
-* ...
+  ```
+  bundle install
+  ```
+
+* Database setup
+
+  ```
+  rails db:create
+  rails db:migrate
+  rails db:seed  # populate your database with 10,000 Article records
+  ```
+
+* Search Indexing
+  ```
+  rails chewy:reset
+  ```
+
+* Start the rails server and visit `http://localhost:3000`:
+  ```
+  rails s
+  ```
+  ![Screenshot 2023-07-25 at 8 31 28 PM](https://github.com/GabrielSandoval/search-demo/assets/6015897/84ddc9aa-81ab-41f8-ba9b-28265c0fa1da)
