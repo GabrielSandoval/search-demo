@@ -1,0 +1,39 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+  redis:
+    image: redis
+    command: redis-server
+    volumes:
+      - 'redis:/data'
+  search:
+    image: elasticsearch:7.17.10
+    volumes:
+      - ./tmp/elasticsearch:/usr/share/elasticsearch/data
+    environment:
+      - "discovery.type=single-node"
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/search-demo
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+      - search
+    environment:
+      - REDIS_URL_CACHING=redis://redis:6379/0
+      - DATABASE_HOST=db
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=password
+      - ELASTICSEARCH_URL=search
+volumes:
+  redis:
+  mysql:

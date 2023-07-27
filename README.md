@@ -2,6 +2,10 @@
 
 Rails search demo using Chewy (Elasticsearch)
 
+* If using Docker, skip to \[[Run with Docker\]](https://github.com/GabrielSandoval/search-demo#run-with-docker) section.
+
+## Setup
+
 * Ruby version
 `3.2.2`
 
@@ -65,3 +69,27 @@ Rails search demo using Chewy (Elasticsearch)
   rails s
   ```
   ![Screenshot 2023-07-25 at 8 31 28 PM](https://github.com/GabrielSandoval/search-demo/assets/6015897/84ddc9aa-81ab-41f8-ba9b-28265c0fa1da)
+
+## Run with [Docker](https://docs.docker.com/get-docker/)
+
+  1. Build the images
+      ```
+      docker-compose build
+      ```
+
+  2. Create database, run migration, populate tables
+
+     _NOTE: First run may fail due to mysql service not fully running yet - run this command again if that's the case_
+      ```
+      docker-compose run web rails db:create db:migrate db:seed
+      ```
+
+  3. Run Search Indexing
+      ```
+      docker-compose run web rake chewy:reset
+      ```
+
+  4. Start web (Rails) service
+      ```
+      docker-compose up
+      ```
